@@ -1421,8 +1421,7 @@ void GR_node::recv_handler(packet *p) //ccu
 
     if (p->type() == "GR_packet")
     {
-        if (DST == p->getHeader()->getNexID())
-            return;
+        
         GR_packet *p2 = dynamic_cast<GR_packet *>(p);
         map<unsigned int, bool>::const_iterator n;
 
@@ -1442,11 +1441,11 @@ void GR_node::recv_handler(packet *p) //ccu
 
         p2->getHeader()->setPreID(CUR);
         p2->getHeader()->setNexID(next);
-        p2->getHeader()->setDstID(p->getHeader()->getDstID());
-        hi = true;
 
         if (next != CUR)
             send_handler(p2);
+        else
+            return ;
 
         /*unsigned int a = dynamic_cast<GR_header*>(p2->getHeader())->pop_visited_node();
         while ( a != BROCAST_ID){
